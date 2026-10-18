@@ -6,4 +6,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.*;
 public interface CartRepository extends JpaRepository<Cart, UUID> {
  @Lock(LockModeType.PESSIMISTIC_WRITE) @Query("select c from Cart c where c.id = :id") Optional<Cart> findByIdForUpdate(@Param("id") UUID id);
+ @EntityGraph(attributePaths = "items") @Query("select c from Cart c where c.id = :id") Optional<Cart> findDetailedById(@Param("id") UUID id);
 }

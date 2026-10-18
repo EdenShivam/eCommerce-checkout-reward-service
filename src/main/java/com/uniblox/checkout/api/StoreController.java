@@ -13,6 +13,6 @@ import java.math.*; import java.util.*;
  @DeleteMapping("/carts/{id}/items/{productId}") @ResponseStatus(HttpStatus.NO_CONTENT) void remove(@PathVariable UUID id,@PathVariable long productId){carts.remove(id,productId);}
  record ItemRequest(@Positive long productId,@Positive int quantity){} record QuantityRequest(@Positive int quantity){}
  record ProductView(long id,String name,BigDecimal unitPrice,int stock){static ProductView from(Product p){return new ProductView(p.getId(),p.getName(),p.getUnitPrice().setScale(2),p.getStock());}}
- record CartLineView(long productId,int quantity){}
- record CartView(UUID id,CartStatus status,List<CartLineView> items,BigDecimal subtotal){static CartView from(Cart c,CartService s){return new CartView(c.getId(),c.getStatus(),c.getItems().stream().map(i->new CartLineView(i.getProductId(),i.getQuantity())).toList(),s.subtotal(c));}}
+ record CartLineView(long productId,String productName,int quantity,BigDecimal unitPrice,BigDecimal lineTotal){}
+ record CartView(UUID id,CartStatus status,List<CartLineView> items,BigDecimal subtotal){static CartView from(Cart c,CartService s){return new CartView(c.getId(),c.getStatus(),c.getItems().stream().map(i->{Product p=s.productById(i.getProductId()); BigDecimal total=p.getUnitPrice().multiply(BigDecimal.valueOf(i.getQuantity())).setScale(2); return new CartLineView(p.getId(),p.getName(),i.getQuantity(),p.getUnitPrice().setScale(2),total);}).toList(),s.subtotal(c));}}
 }
