@@ -1,0 +1,8 @@
+target/
+.mvn/timing.properties
+*.log
+.DS_Store
+
+# IntelliJ IDEA user-specific state
+.idea/workspace.xml
+.idea/httpRequests/
