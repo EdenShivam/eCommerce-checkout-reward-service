@@ -12,7 +12,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(properties = "spring.test.mock.mockito.reset=none")
+@SpringBootTest(properties = {
+    "spring.test.mock.mockito.reset=none",
+    "spring.datasource.url=jdbc:h2:mem:database-config-test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH"
+})
 class DatabaseConfigurationIntegrationTest {
 
     @Autowired

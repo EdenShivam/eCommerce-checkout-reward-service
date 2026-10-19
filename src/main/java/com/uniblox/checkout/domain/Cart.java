@@ -19,4 +19,5 @@ public class Cart {
     public void add(Product p, int q) { CartItem existing = findItem(p.getId()); if (existing == null) items.add(new CartItem(this, p.getId(), q)); else existing.add(q); }
     public void set(long productId, int q) { findItem(productId).setQuantity(q); }
     public void remove(long productId) { items.removeIf(i -> i.getProductId().equals(productId)); }
+    public void markCheckedOut() { this.status = CartStatus.CHECKED_OUT; }
 }

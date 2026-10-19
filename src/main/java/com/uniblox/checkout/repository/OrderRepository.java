@@ -1,0 +1,1 @@
+package com.uniblox.checkout.repository; import com.uniblox.checkout.domain.Order; import org.springframework.data.jpa.repository.JpaRepository; import java.util.*; public interface OrderRepository extends JpaRepository<Order,UUID>{Optional<Order> findByCartId(UUID cartId); List<Order> findAllByCartId(UUID cartId); long countByStatus(String status);}

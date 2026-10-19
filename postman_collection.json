@@ -1,0 +1,244 @@
+{
+  "info": {
+    "name": "Uniblox Checkout Rewards Service",
+    "description": "Collection for product catalog, cart management, checkout, order lookup, coupon generation and report flows.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "cartId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "idempotencyKey",
+      "value": "checkout-001",
+      "type": "string"
+    },
+    {
+      "key": "couponCode",
+      "value": "TESTCODE",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get all products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get product by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Carts",
+      "item": [
+        {
+          "name": "Create cart",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carts",
+              "host": ["{{baseUrl}}"],
+              "path": ["carts"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get cart by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carts/{{cartId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "{{cartId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add item to cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"quantity\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carts/{{cartId}}/items",
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "{{cartId}}", "items"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Set item quantity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carts/{{cartId}}/items/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "{{cartId}}", "items", "{{productId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete item from cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/carts/{{cartId}}/items/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "{{cartId}}", "items", "{{productId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Checkout cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Idempotency-Key",
+                "value": "{{idempotencyKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"couponCode\": \"{{couponCode}}\",\n  \"expectedTotal\": \"0.00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carts/{{cartId}}/checkout",
+              "host": ["{{baseUrl}}"],
+              "path": ["carts", "{{cartId}}", "checkout"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Get order by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "{{orderId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Generate coupon",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/coupons/generate",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "coupons", "generate"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "report"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

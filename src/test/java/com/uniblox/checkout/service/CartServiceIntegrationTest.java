@@ -9,7 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
 
-@SpringBootTest(properties = "spring.test.mock.mockito.reset=none")
+@SpringBootTest(properties = {
+	"spring.test.mock.mockito.reset=none",
+	"spring.datasource.url=jdbc:h2:mem:cart-service-test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH"
+})
 class CartServiceIntegrationTest {
  @Autowired CartService carts; @Autowired ProductRepository products;
  @Test void addMergesQuantityAndUsesCurrentPrices(){ Cart cart=carts.create(); long product=products.findAll().getFirst().getId(); carts.add(cart.getId(),product,1); Cart updated=carts.add(cart.getId(),product,2); assertThat(updated.getItems()).singleElement().satisfies(i->assertThat(i.getQuantity()).isEqualTo(3)); assertThat(carts.subtotal(carts.get(cart.getId()))).isEqualByComparingTo("55.50"); }
